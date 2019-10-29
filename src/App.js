@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import './App.css';
-// instantiating spotify API
-import SpotifyWebApi from 'spotify-web-api-js';
+
+import React, { Component } from "react";
+import "./App.css";
+import SpotifyWebApi from "spotify-web-api-js";
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
-  constructor(){
+  constructor() {
+
     super();
     const params = this.getHashParams();
     const token = params.access_token;
@@ -14,6 +15,7 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
+
       nowPlaying: { name: 'Not Checked', albumArt: '' }
     }
   }
