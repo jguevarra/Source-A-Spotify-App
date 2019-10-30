@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import SpotifyWebApi from "spotify-web-api-js";
+import axios from "axios";
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
@@ -13,7 +14,8 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: "Not Checked", albumArt: "" }
+      nowPlaying: { name: "Not Checked", albumArt: "" },
+      topArtists: ""
     };
   }
   getHashParams() {
@@ -40,6 +42,27 @@ class App extends Component {
     });
   }
 
+  getTopArtists() {
+    let link =
+      "https://api.spotify.com/v1/me/top/artists/" +
+      spotifyApi.getAccessToken();
+    axios.get(link).then(res => {
+      alert(res);
+    });
+  }
+
+  getNewReleases() {
+    let link = "https://api.spotify.com/v1/browse/new-releases?country=SE";
+    spotifyApi.getNewReleases().then(response => {
+      let newReleases = "";
+      for (let i = 0; i < response.albums.items.length; i++) {
+        newReleases += response.albums.items[i].name;
+        newReleases += ", ";
+      }
+      alert(newReleases);
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -53,6 +76,9 @@ class App extends Component {
             Check Now Playing
           </button>
         )}
+        <button onClick={() => this.getNewReleases()}>
+          Check New Releases
+        </button>
       </div>
     );
   }
