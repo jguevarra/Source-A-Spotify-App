@@ -22,6 +22,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
+import Fab from '@material-ui/core/Fab';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 import SpotifyWebApi from 'spotify-web-api-js';
 
@@ -94,6 +96,14 @@ const useStyles = makeStyles(theme => ({
     fullList: {
         width: 'auto',
     },
+
+    // Spotify Login button
+    fab: {
+        margin: theme.spacing(1),
+      },
+      extendedIcon: {
+        marginRight: theme.spacing(1),
+      },
 }));
 
 export { useStyles };
@@ -257,43 +267,23 @@ export default function PrimarySearchAppBar() {
                     <Drawer open={state.left} onClose={toggleDrawer('left', false)}>
                         {sideList('left')}
                     </Drawer>
+
                     <Typography className={classes.title} variant="h6" noWrap>
                         <b>HackCville Spotify Project</b>
                     </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
+
                     <div className={classes.grow} />
-                    <div className={classes.sectionDesktop}>
-                        <IconButton aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <MailIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={17} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton edge="end" aria-label="account of current user" aria-controls={menuId} aria-haspopup="true" onClick={handleProfileMenuOpen} color="inherit">
-                            <AccountCircle />
-                        </IconButton>
-                    </div>
+
                     <div className={classes.sectionMobile}>
                         <IconButton aria-label="show more" aria-controls={mobileMenuId} aria-haspopup="true" onClick={handleMobileMenuOpen} color="inherit">
                             <MoreIcon />
                         </IconButton>
                     </div>
+                    
+                    <Fab variant="extended" aria-label="like" className={classes.fab} href='http://localhost:8888'>
+                        <LockOpenIcon className={classes.extendedIcon} />
+                            Spotify Login
+                        </Fab>
                 </Toolbar>
             </AppBar>
             {renderMobileMenu}
