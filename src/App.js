@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './App.css';
 // instantiating spotify API
 import SpotifyWebApi from 'spotify-web-api-js';
+// import { AppBar } from '@material-ui/core';
+import AppBar from './components/AppBar.js';
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
@@ -44,9 +46,15 @@ class App extends Component {
       })
   }
 
+  getRandomTrack(){
+    let link = 'https://api.spotify.com/v1/tracks';
+    // reference William's code
+  }
+
   render() {
     return (
       <div className="App">
+        <AppBar/>
         <a href='http://localhost:8888' > Login to Spotify </a>
         <div>
           Now Playing: { this.state.nowPlaying.name }
