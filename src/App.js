@@ -4,10 +4,13 @@ import './App.css';
 import SpotifyWebApi from 'spotify-web-api-js';
 // import { AppBar } from '@material-ui/core';
 import AppBar from './components/AppBar.js';
+
+import axios from "axios";
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
-  constructor(){
+  constructor() {
+
     super();
     const params = this.getHashParams();
     const token = params.access_token;
@@ -16,6 +19,7 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
+
       nowPlaying: { name: 'Not Checked', albumArt: '' }
     }
   }
@@ -49,6 +53,35 @@ class App extends Component {
   getRandomTrack(){
     let link = 'https://api.spotify.com/v1/tracks';
     // reference William's code
+    spotifyApi.getTracks().then(response => {
+      let tracks = "";
+      for (let i = 0; i < response.albums.items.length; i++) {
+        tracks += response.albums.items[i].name;
+        tracks += ", ";
+      }
+      alert(tracks);
+    })
+  }
+
+  getTopArtists() {
+    let link =
+      "https://api.spotify.com/v1/me/top/artists/" +
+      spotifyApi.getAccessToken();
+    axios.get(link).then(res => {
+      alert(res);
+    });
+  }
+
+  getNewReleases() {
+    let link = "https://api.spotify.com/v1/browse/new-releases?country=SE";
+    spotifyApi.getNewReleases().then(response => {
+      let newReleases = "";
+      for (let i = 0; i < response.albums.items.length; i++) {
+        newReleases += response.albums.items[i].name;
+        newReleases += ", ";
+      }
+      alert(newReleases);
+    });
   }
 
   render() {
@@ -66,7 +99,10 @@ class App extends Component {
           <button onClick={() => this.getNowPlaying()}>
             Check Now Playing
           </button>
-        }
+        )}
+        <button onClick={() => this.getNewReleases()}>
+          Check New Releases
+        </button>
       </div>
     );
   }
