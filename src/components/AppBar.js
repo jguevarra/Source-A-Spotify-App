@@ -280,6 +280,7 @@ export default function PrimarySearchAppBar() {
                         </IconButton>
                     </div>
                     
+                    {/* Spotify login button */}
                     <Fab variant="extended" aria-label="like" className={classes.fab} href='http://localhost:8888'>
                         <LockOpenIcon className={classes.extendedIcon} />
                             Spotify Login
