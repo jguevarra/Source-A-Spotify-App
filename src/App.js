@@ -40,7 +40,7 @@ class App extends Component {
     this.state = {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', albumArt: '' },
-      featured: { name: 'null', artist: 'null', albumType: 'null', type: 'null', image: 'null'},
+      featured: { name: 'Click Button to View Featured Release', artist: '', albumType: '', image: ''},
       user: { name: 'null'}
     }
   }
@@ -108,10 +108,9 @@ class App extends Component {
       this.setState({
         featured: {
           name: response.albums.items[randomInt].name,
-          artist: response.albums.items[randomInt].artists, // fix this, figure out to get artist information
+          artist: response.albums.items[randomInt].artists[0].name,
           albumType: response.albums.items[randomInt].album_type,
-          type: response.albums.items[randomInt].type,
-          image: response.albums.items[randomInt].image // fix this
+          image: response.albums.items[randomInt].images[1].url // fix this
         }
       });
     })
@@ -163,16 +162,20 @@ class App extends Component {
           </button>
         }
 
-        {/* Display "featured song" */}
+        {/* Display "featured song" and details about it*/}
         <div>
         <b>Featured New Release:</b> 
+        </div>
+        { this.state.featured.name } <br></br>
+        ARTIST: <i>{ this.state.featured.artist }</i> || ALBUM TYPE: <i>{ this.state.featured.albumType }</i><br></br>
+        <div>
+          <img src={this.state.featured.image} style={{ height: 300 }} />
+        </div>
         { this.state.loggedIn &&
           <button onClick={() => this.getFeaturedRelease()}>
             Check Featured Song
           </button>
         }
-        </div>
-        { this.state.featured.name }
       </div>
     );
   }
