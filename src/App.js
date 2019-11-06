@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import './App.css';
-import SpotifyWebApi from 'spotify-web-api-js'; // instantiating spotify API
-import AppBar from './components/AppBar.js';
+import React, { Component } from "react";
+import "./App.css";
+import SpotifyWebApi from "spotify-web-api-js"; // instantiating spotify API
+import AppBar from "./components/AppBar.js";
 import axios from "axios";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 // import Paper from '@material-ui/core/Paper';
 // import Typography from '@material-ui/core/Typography';
 // import Button from '@material-ui/core/Button';
@@ -25,11 +25,10 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3, 2),
     width: 500,
     height: 400
-  },
+  }
 }));
 
 class App extends Component {
-
   constructor() {
     super();
     const params = this.getHashParams();
@@ -39,36 +38,41 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '' },
-      featured: { name: 'Click Button to View Featured Release', artist: '', albumType: '', image: ''},
-      user: { name: 'null'}
-    }
+      nowPlaying: { name: "Not Checked", albumArt: "" },
+      featured: {
+        name: "Click Button to View Featured Release",
+        artist: "",
+        albumType: "",
+        image: ""
+      },
+      user: { name: "null" }
+    };
   }
 
   // access to the token in order to use the API library
-  getHashParams(){
+  getHashParams() {
     let hashParams = {};
-    let e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    e = r.exec(q)
+    let e,
+      r = /([^&;=]+)=?([^&;]*)/g,
+      q = window.location.hash.substring(1);
+    e = r.exec(q);
     while (e) {
-       hashParams[e[1]] = decodeURIComponent(e[2]);
-       e = r.exec(q);
+      hashParams[e[1]] = decodeURIComponent(e[2]);
+      e = r.exec(q);
     }
     return hashParams;
   }
 
   // function to get the song currently playing from the user's account
-  getNowPlaying(){
-    spotifyApi.getMyCurrentPlaybackState()
-      .then((response) => {
-        this.setState({
-          nowPlaying: { 
-              name: response.item.name, 
-              albumArt: response.item.album.images[0].url
-            }
-        });
-      })
+  getNowPlaying() {
+    spotifyApi.getMyCurrentPlaybackState().then(response => {
+      this.setState({
+        nowPlaying: {
+          name: response.item.name,
+          albumArt: response.item.album.images[0].url
+        }
+      });
+    });
   }
 
   getTopArtists() {
@@ -113,28 +117,25 @@ class App extends Component {
           image: response.albums.items[randomInt].images[1].url // fix this
         }
       });
-    })
+    });
   }
 
   getUsername() {
-    let link = 'https://api.spotify.com/v1/me';
+    let link = "https://api.spotify.com/v1/me";
     spotifyApi.getUser().then(response => {
       this.setState({
         user: {
           name: response.type
         }
       });
-    })
+    });
   }
 
   render() {
-
     return (
       <div className="App">
-        
         {/* Navigation Bar */}
-        <AppBar/>     
-
+        <AppBar />
         {/* Display user name */}
         {/* <b>Welcome </b> { this.state.user.name }
         {this.state.loggedIn &&
@@ -142,40 +143,39 @@ class App extends Component {
             Show User Name
           </button>
         } */}
-
         {/* Display what is currently playing */}
         <b>Now Playing:</b> {this.state.nowPlaying.name}
-        {this.state.loggedIn &&
+        {this.state.loggedIn && (
           <button onClick={() => this.getNowPlaying()}>
             Check Now Playing
           </button>
-        }
+        )}
         <div>
           <img src={this.state.nowPlaying.albumArt} style={{ height: 300 }} />
         </div>
-
         {/* Display new releases */}
         <b>Newest Releases:</b>
-        { this.state.loggedIn &&
+        {this.state.loggedIn && (
           <button onClick={() => this.getNewReleases()}>
             Check New Releases
           </button>
-        }
-
+        )}
         {/* Display "featured song" and details about it*/}
         <div>
-        <b>Featured New Release:</b> 
+          <b>Featured New Release:</b>
         </div>
-        { this.state.featured.name } <br></br>
-        ARTIST: <i>{ this.state.featured.artist }</i> || ALBUM TYPE: <i>{ this.state.featured.albumType }</i><br></br>
+        {this.state.featured.name} <br></br>
+        ARTIST: <i>{this.state.featured.artist}</i> || ALBUM TYPE:{" "}
+        <i>{this.state.featured.albumType}</i>
+        <br></br>
         <div>
           <img src={this.state.featured.image} style={{ height: 300 }} />
         </div>
-        { this.state.loggedIn &&
+        {this.state.loggedIn && (
           <button onClick={() => this.getFeaturedRelease()}>
             Check Featured Song
           </button>
-        }
+        )}
       </div>
     );
   }
